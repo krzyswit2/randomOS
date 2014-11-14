@@ -4,11 +4,11 @@
 _start:
     call initIo
 
-    mov $neez, %si
+    mov $neezs, %si
     call printStr
     #mov $neez, %si
     #call printStr
 
     infLoop: jmp infLoop
 
-    neez: .string "neezs\niks\noko llyp"
+    neezs: .string "neezs\niks\noko llyp\nkasza\nkosz\nklika\nnklika"

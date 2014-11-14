@@ -34,8 +34,9 @@ nextLine:
     mov %ecx, %eax
     
     cdq #przekonwertuj liczbe w eax na edx:eax
-    mov $160, %ebx
+    mov $80, %ebx
     div %ebx
     add %edx, %ecx
+    sub $0, %ecx
     movl %ecx, pos
     jmp printStr
