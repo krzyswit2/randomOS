@@ -60,7 +60,7 @@ returnCarriage:
     mov $160, %ebx
     cltd
     div %ebx #mod jest w edx
-    sub %edx, %ecx
+    sub %edx, %ecx #ecx=ecx-edx; czyli ecx = ecx - (ecx mod 80)
     add $0xB8000, %ecx
     movl %ecx, pos
     jmp printStr
@@ -69,6 +69,16 @@ backspace:
     movl pos, %ecx
     sub $0xB8000, %ecx
     sub $0x02, %ecx
+
+    add $0xB8000, %ecx
+
+    movb $0x20, (%ecx) #wpisujemy spacje
+    inc %ecx
+    movb $0x07, (%ecx) #bajt koloru: 0x07 - szary na czarnym tle
+    inc %ecx
+
+    sub $0xB8002, %ecx
+
     add $0xB8000, %ecx
     movl %ecx, pos
     jmp printStr

@@ -11,4 +11,4 @@ _start:
 
     infLoop: jmp infLoop
 
-    neezs: .string "\n\n\n\n\n\n\n\n\n\nk\to\nko\to"
+    neezs: .string "\n\n\n\n\n\n\n\n\n\nkulaa\b\nkula\b"
