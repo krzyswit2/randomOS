@@ -17,6 +17,15 @@ printStr:
     cmp $0x0a, %al #line feed
     je nextLine
     
+    cmp $0x0d, %al #carriage return
+    je returnCarriage
+    
+    cmp $0x08, %al #backspace
+    je backspace
+    
+    cmp $0x09, %al #horizontal tab
+    je horizontalTab
+    
     movl pos, %ecx #tymczasowo zapisujemy pozycje kursora do rejestru
     movb %al, (%ecx) #wpisujemy znak
     inc %ecx
@@ -42,4 +51,37 @@ nextLine:
     add     %ebx, %ecx # ecx = ecx+80-(ecx mod 160)
     add     $0xB8000, %ecx
 	movl    %ecx, pos
+    jmp printStr
+
+returnCarriage:
+    movl pos, %ecx
+    sub $0xB8000, %ecx
+    movl %ecx, %eax
+    mov $160, %ebx
+    cltd
+    div %ebx #mod jest w edx
+    sub %edx, %ecx
+    add $0xB8000, %ecx
+    movl %ecx, pos
+    jmp printStr
+
+backspace:
+    movl pos, %ecx
+    sub $0xB8000, %ecx
+    sub $0x02, %ecx
+    add $0xB8000, %ecx
+    movl %ecx, pos
+    jmp printStr
+
+horizontalTab:
+    movl pos, %ecx
+    sub $0xB8000, %ecx
+    movl %ecx, %eax
+    mov $8, %ebx
+    cltd
+    div %ebx #mod jest w edx
+    sub %edx, %ebx
+    add %ebx, %ecx
+    add $0xB8000, %ecx
+    movl %ecx, pos
     jmp printStr
