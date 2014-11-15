@@ -1,3 +1,21 @@
+/*
+    randomOS - basic operating system
+    Copyright (C) 2014  krzygorz
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 .code16
 
 .text
@@ -19,7 +37,7 @@ readCode:
 setupEnv:
     xor %ah,%ah
     mov $0x1112, %ax
-    int $0x10
+    int $0x10 #przelacz na kolorowe VGA 80x25
 
 real2prot:
         mov $0x2401, %ax #enable A20(BIOS way)
@@ -32,13 +50,15 @@ real2prot:
         movl %cr0, %eax
         orl $1, %eax #set PE bit
         movl %eax, %cr0
+    cmpl $0xbaba, 0x7e00 #sprawdz magic number
     
-    ljmp $0x08,$0x7e00 #long jump do zaladowanej pamieci
-                       #0x08 - code segment w GDT, 0x7e00 - adres, na ktorym znajduje
-                       #sie zaladowany kod
+    ljmp $0x08, $0x7e04 #long jump do zaladowanej pamieci
+                       #0x08 - code segment w GDT, 0x7e02 - adres, na ktorym znajduje
+                       #sie zaladowany kod(bez magic number)
     
     infLoop: jmp infLoop
      
+errormsg: .string "error!"
 /*
     GDT - Global Descriptor Table
     Tu sie zapisuje segmenty pamieci i ich uprawnienia

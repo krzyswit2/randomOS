@@ -16,31 +16,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "utils.h"
+#include <stdint.h>
 
-file readFile(char* path)
+#ifndef FORMAT_H
+#define FORMAT_H
+
+typedef struct KernelHeader
 {
-    file ret;
-	char* buffer = 0;
-	long length;
-	FILE* f = fopen(path, "rb");
+    int32_t magic;
+} KernelHeader;
 
-	if(f)
-	{
-		fseek(f, 0, SEEK_END);
-		length = ftell(f);
-		fseek(f, 0, SEEK_SET);
-		buffer = malloc(length);
-		if(buffer)
-		{
-			fread(buffer, 1, length, f);
-		}
-		fclose(f);
-	}
-
-    ret.data = buffer;
-    ret.size = length;
-    return ret;
-}
+#endif
