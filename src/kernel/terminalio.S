@@ -2,17 +2,34 @@
 
 pos: .byte 0,0,0,0 #miejsce na adres nastepnego miejsca na znak
 
-.global initIo
-initIo:
+.global initTermIo
+initTermIo:
     movl $0xB8000, pos
+    call clnScr
     ret
+       
+.global clnScr
+clnScr:
+    movl $0xB8000, pos
+    mov $0xB8000, %ecx
+    loop:
+        movw $0x20, (%ecx)
         
+        cmp $0xB87D0, %ecx
+        je doneClnScr
+        
+        inc %ecx
+        inc %ecx
+        jmp loop
+    doneClnScr:
+        ret
+    
 .global printStr
 printStr:
     lodsb #zaladuj nastepny znak(wskazywany przez %si) do %al
     
     or %al, %al
-    jz done #jesli %al(nastepny znak) = 0, wyjdz z petli
+    jz donePrintStr #jesli %al(nastepny znak) = 0, wyjdz z petli
     
     cmp $0x0a, %al #line feed
     je nextLine
@@ -26,15 +43,15 @@ printStr:
     
     jmp  printStr #wracamy na poczatek petli
     
-    done:
+    donePrintStr:
         ret
         
 nextLine:
     movl    pos, %ecx
-	sub     $0xB8000, %ecx
+	sub     $0xB8000, %ecx #odejmujemy poczatkowy adres
 	movl	%ecx, %eax
-	mov     $160, %ebx
-	cltd
+	mov     $160, %ebx #160 = szerokosc ekranu w znakach * 2
+	cltd    #przekonwertuj liczbe w eax na edx:eax
 	div 	%ebx #mod jest w edx
 	
 	mov     $160, %ebx
