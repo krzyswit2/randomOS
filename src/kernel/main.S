@@ -9,4 +9,4 @@ _start:
 
     infLoop: jmp infLoop
 
-    neezs: .string "\n\n\n\n\n\n\n\n\n\nkulaa\b\nkula\b"
+    neezs: .string "\n\n\n\n\n\n\n\n\n\n\t\tkoza\rklika"

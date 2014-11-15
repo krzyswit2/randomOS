@@ -66,9 +66,9 @@ returnCarriage:
     jmp printStr
 
 backspace:
-    movl pos, %ecx
+    movl pos, %ecx #tymczasowo zapisujemy pozycje kursora do rejestru
     sub $0xB8000, %ecx
-    sub $0x02, %ecx
+    sub $0x02, %ecx #cofamy wskaznik o jeden znak
 
     add $0xB8000, %ecx
 
@@ -77,9 +77,7 @@ backspace:
     movb $0x07, (%ecx) #bajt koloru: 0x07 - szary na czarnym tle
     inc %ecx
 
-    sub $0xB8002, %ecx
-
-    add $0xB8000, %ecx
+    sub $0x02, %ecx #cofamy wskaznik o jeden znak
     movl %ecx, pos
     jmp printStr
 
