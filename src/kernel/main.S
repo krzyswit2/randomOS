@@ -6,8 +6,6 @@ _start:
 
     mov $neezs, %si
     call printStr
-    #mov $neez, %si
-    #call printStr
 
     infLoop: jmp infLoop
 
